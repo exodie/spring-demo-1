@@ -26,6 +26,21 @@ public class FlatController {
         return flatService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public Flat getFlatById(@PathVariable Long id) {
+        return flatService.getFlatById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Flat updateFlatById(@PathVariable Long id, @RequestBody Flat flat) {
+        return flatService.updateFlatById(id, flat);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteFlatById(@PathVariable Long id) {
+        flatService.deleteFlatById(id);
+    }
+
     @GetMapping("/retry2")
     public String testRetry2(@RequestParam("retry") boolean retry) {
         return flatService.testRetry2(retry);

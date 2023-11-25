@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
+import javax.management.RuntimeErrorException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,29 @@ public class FlatService {
 
     public List<Flat> getAll() {
         return flatsRepository.findAll();
+    }
+
+    public Flat getFlatById(Long id) {
+        Optional<Flat> flat = flatsRepository.findById(id);
+
+        if (flat.isEmpty()) {
+            throw new RuntimeException("Flat id is empty [undefined]");
+        }
+
+        return flat.get();
+    }
+
+    public Flat updateFlatById(Long id, Flat updatedFlat) {
+        if(flatsRepository.findById(id).isEmpty()){
+            throw new RuntimeException("No such ID");
+        }
+
+        updatedFlat.setId(id);
+        return flatsRepository.save(updatedFlat);
+    }
+
+    public void deleteFlatById(Long id) {
+        flatsRepository.deleteById(id);
     }
 
     public String testRetry2(boolean retry) {
